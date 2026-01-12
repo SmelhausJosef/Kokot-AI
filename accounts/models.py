@@ -85,5 +85,3 @@ class Invitation(models.Model):
     def mark_accepted(self) -> None:
         self.accepted_at = timezone.now()
         self.save(update_fields=["accepted_at"])
-
-# Create your models here.

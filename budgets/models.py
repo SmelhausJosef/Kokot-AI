@@ -102,5 +102,3 @@ class BudgetItemAmount(models.Model):
 
     def __str__(self) -> str:
         return f"{self.budget_item} ({self.amount})"
-
-# Create your models here.

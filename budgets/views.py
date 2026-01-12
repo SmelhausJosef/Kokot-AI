@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
@@ -5,6 +7,7 @@ from accounts.mixins import OrganizationScopedMixin, RoleRequiredMixin
 from accounts.models import OrganizationRole
 
 from .forms import BudgetForm
+from .importers import ExcelImportError, import_budget_from_excel
 from .models import Budget
 
 
@@ -46,3 +49,16 @@ class BudgetCreateView(RoleRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse("budgets:budget-list")
+
+    def form_valid(self, form):
+        with transaction.atomic():
+            self.object = form.save()
+            if self.object.excel_file:
+                try:
+                    import_budget_from_excel(self.object)
+                except ExcelImportError as exc:
+                    form.add_error("excel_file", str(exc))
+                    self.object.excel_file.delete(save=False)
+                    transaction.set_rollback(True)
+                    return self.form_invalid(form)
+        return HttpResponseRedirect(self.get_success_url())

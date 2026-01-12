@@ -10,9 +10,10 @@ This file tracks delivered functionality in the repository.
 - Phase 4: Budget period workflow with validation (open -> submitted -> accepted/declined -> closed).
 - Phase 5: SSR UI with Material Web, Czech i18n-ready templates, role-aware navigation; budget list/detail/create.
 - Phase 6: Excel import for Zakazka sheet via openpyxl; Budget create auto-imports headers/items; import errors roll back and remove file; tests added.
+- Phase 7: Docker build, Kubernetes manifests, WhiteNoise static serving, and OpenTelemetry configuration.
 
 ## In progress (current branch)
-- Phase 7: Deployment readiness + OpenTelemetry configuration.
+- None.
 
 ## Pending
 - Phase 8: Hardening, performance, and additional tests.

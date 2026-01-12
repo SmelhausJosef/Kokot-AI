@@ -98,5 +98,5 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/healthz/"
+LOGIN_REDIRECT_URL = "/constructions/"
 LOGOUT_REDIRECT_URL = "/accounts/login/"

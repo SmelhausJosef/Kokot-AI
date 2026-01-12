@@ -13,6 +13,8 @@ This file tracks delivered functionality in the repository.
 - Phase 7: Docker build, Kubernetes manifests, WhiteNoise static serving, and OpenTelemetry configuration.
 
 ## In progress (current branch)
+- Phase 8: Hardening, performance, and additional tests.
+- Home page now redirects to the construction list at `/constructions/`.
 - Admin: Organization, membership, and invitation management in Django admin.
 
 ## Pending

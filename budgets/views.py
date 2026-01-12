@@ -51,14 +51,15 @@ class BudgetCreateView(RoleRequiredMixin, CreateView):
         return reverse("budgets:budget-list")
 
     def form_valid(self, form):
-        with transaction.atomic():
-            self.object = form.save()
-            if self.object.excel_file:
-                try:
+        self.object = None
+        try:
+            with transaction.atomic():
+                self.object = form.save()
+                if self.object.excel_file:
                     import_budget_from_excel(self.object)
-                except ExcelImportError as exc:
-                    form.add_error("excel_file", str(exc))
-                    self.object.excel_file.delete(save=False)
-                    transaction.set_rollback(True)
-                    return self.form_invalid(form)
+        except ExcelImportError as exc:
+            if self.object and self.object.excel_file:
+                self.object.excel_file.delete(save=False)
+            form.add_error("excel_file", str(exc))
+            return self.form_invalid(form)
         return HttpResponseRedirect(self.get_success_url())

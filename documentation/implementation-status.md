@@ -9,10 +9,10 @@ This file tracks delivered functionality in the repository.
 - Phase 3: Budgets, headers, items, periods; Excel file storage on Budget.
 - Phase 4: Budget period workflow with validation (open -> submitted -> accepted/declined -> closed).
 - Phase 5: SSR UI with Material Web, Czech i18n-ready templates, role-aware navigation; budget list/detail/create.
-
-## In progress (current branch)
 - Phase 6: Excel import for Zakazka sheet via openpyxl; Budget create auto-imports headers/items; import errors roll back and remove file; tests added.
 
-## Pending
+## In progress (current branch)
 - Phase 7: Deployment readiness + OpenTelemetry configuration.
+
+## Pending
 - Phase 8: Hardening, performance, and additional tests.

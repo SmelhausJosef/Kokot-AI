@@ -26,12 +26,22 @@ Notes:
 - The distro installs the API/SDK and the `opentelemetry-instrument` and `opentelemetry-bootstrap` tools.
 - `opentelemetry-bootstrap -a install` scans installed packages and installs matching instrumentation libraries.
 
+Repository notes:
+- These packages are included in `requirements.txt` to keep Docker builds deterministic.
+- The Docker image starts the app with `opentelemetry-instrument` by default.
+
 ### Run the app with auto-instrumentation
 Use `opentelemetry-instrument` to start the Django app (gunicorn example):
 
 ```sh
 opentelemetry-instrument \
   gunicorn config.wsgi:application
+```
+
+In this repository, the Docker image uses:
+
+```sh
+opentelemetry-instrument gunicorn config.wsgi:application --bind 0.0.0.0:8000
 ```
 
 Alternatively, configure via environment variables (example):

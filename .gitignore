@@ -12,3 +12,6 @@ env/
 
 node_modules/
 static/dist/
+staticfiles/
+!staticfiles/
+!staticfiles/.gitkeep

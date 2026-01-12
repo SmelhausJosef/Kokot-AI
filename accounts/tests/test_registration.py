@@ -1,8 +1,10 @@
 import uuid
+from datetime import timedelta
 
 import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.utils import timezone
 
 from accounts.models import Invitation, Organization, OrganizationMembership, OrganizationRole
 
@@ -30,6 +32,38 @@ def test_public_registration_creates_org_and_ceo_membership(client):
 def test_invite_registration_requires_valid_token(client):
     bad_token = uuid.uuid4()
     response = client.get(reverse("accounts:invite-register", args=[bad_token]))
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_invite_registration_rejects_expired_invitation(client):
+    inviter = User.objects.create_user(username="ceo@example.com", password="StrongPass123!")
+    organization = Organization.objects.create(name="Delta Works")
+    invitation = Invitation.objects.create(
+        organization=organization,
+        email="manager@example.com",
+        role=OrganizationRole.BUDGET_MANAGER,
+        invited_by=inviter,
+        expires_at=timezone.now() - timedelta(days=1),
+    )
+
+    response = client.get(reverse("accounts:invite-register", args=[invitation.token]))
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_invite_registration_rejects_accepted_invitation(client):
+    inviter = User.objects.create_user(username="ceo@example.com", password="StrongPass123!")
+    organization = Organization.objects.create(name="Delta Works")
+    invitation = Invitation.objects.create(
+        organization=organization,
+        email="manager@example.com",
+        role=OrganizationRole.BUDGET_MANAGER,
+        invited_by=inviter,
+        accepted_at=timezone.now(),
+    )
+
+    response = client.get(reverse("accounts:invite-register", args=[invitation.token]))
     assert response.status_code == 404
 
 

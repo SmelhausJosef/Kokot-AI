@@ -50,11 +50,26 @@ class InviteSignupView(FormView):
 
     def form_valid(self, form):
         with transaction.atomic():
+            invitation = self._get_invitation_for_update()
             user = form.save()
             OrganizationMembership.objects.create(
                 user=user,
-                organization=self.invitation.organization,
-                role=self.invitation.role,
+                organization=invitation.organization,
+                role=invitation.role,
             )
-            self.invitation.mark_accepted()
+            invitation.mark_accepted()
         return super().form_valid(form)
+
+    def _get_invitation_for_update(self) -> Invitation:
+        token = self.kwargs.get("token")
+        try:
+            invitation = (
+                Invitation.objects.select_for_update()
+                .select_related("organization")
+                .get(token=token)
+            )
+        except Invitation.DoesNotExist as exc:
+            raise Http404 from exc
+        if invitation.is_expired or invitation.is_accepted:
+            raise Http404
+        return invitation

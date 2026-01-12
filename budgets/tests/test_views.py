@@ -1,6 +1,10 @@
+from io import BytesIO
+
 import pytest
 from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
+from openpyxl import Workbook
 
 from accounts.models import Organization, OrganizationMembership, OrganizationRole
 from budgets.models import Budget
@@ -12,6 +16,16 @@ User = get_user_model()
 def build_order(organization):
     construction = Construction.objects.create(name="Site A", organization=organization)
     return Order.objects.create(name="Order A", construction=construction)
+
+
+def build_invalid_excel_payload():
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Zakázka"
+    sheet.append(["Wrong", "Headers"])
+    buffer = BytesIO()
+    workbook.save(buffer)
+    return buffer.getvalue()
 
 
 @pytest.mark.django_db
@@ -46,3 +60,28 @@ def test_budget_create_allows_sub_budget_manager(client):
     response = client.post(reverse("budgets:budget-create"), payload)
     assert response.status_code == 302
     assert Budget.objects.filter(order=order, name="Budget A").exists()
+
+
+@pytest.mark.django_db
+def test_budget_create_rolls_back_on_import_error(settings, tmp_path, client):
+    settings.MEDIA_ROOT = tmp_path
+    organization = Organization.objects.create(name="Alpha Build")
+    user = User.objects.create_user(username="bm@example.com", password="StrongPass123!")
+    OrganizationMembership.objects.create(
+        user=user,
+        organization=organization,
+        role=OrganizationRole.BUDGET_MANAGER,
+    )
+    order = build_order(organization)
+
+    client.login(username="bm@example.com", password="StrongPass123!")
+    payload = {
+        "order": order.id,
+        "name": "Budget A",
+        "excel_file": SimpleUploadedFile("budget.xlsx", build_invalid_excel_payload()),
+    }
+    response = client.post(reverse("budgets:budget-create"), payload)
+    assert response.status_code == 200
+    assert "excel_file" in response.context["form"].errors
+    assert not Budget.objects.filter(order=order).exists()
+    assert not list(tmp_path.rglob("*.xlsx"))

@@ -12,6 +12,7 @@ Use Material Design 3 via Material Web components (`@material/web`) with Django 
 - Use Vite to bundle a small entry file that imports only needed Material Web components.
 - Ship the compiled JS/CSS as Django static files.
 - Keep JS usage minimal and component driven (dialogs, menus, text fields, buttons).
+- No Vite dev server: run `npm run build` to refresh static assets.
 
 ## Theming
 - Define Material tokens once (colors, typography, shape, elevations).

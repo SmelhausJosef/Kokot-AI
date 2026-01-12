@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ order.name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ order.name }}</h1>
+  <p>Stavba: {{ order.construction.name }}</p>
+
+  <h2>Contract For Work</h2>
+  {% if order.contract %}
+    <p>{{ order.contract.contract_number }}</p>
+  {% else %}
+    <md-filled-button href="{% url 'construction:contract-create' order.pk %}">Nový kontrakt</md-filled-button>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Stavby{% endblock %}
+
+{% block content %}
+  <h1>Stavby</h1>
+  <p><md-filled-button href="{% url 'construction:construction-create' %}">Nová stavba</md-filled-button></p>
+  <ul>
+    {% for construction in constructions %}
+      <li>
+        <a href="{% url 'construction:construction-detail' construction.pk %}">{{ construction.name }}</a>
+      </li>
+    {% empty %}
+      <li>Žádné stavby.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

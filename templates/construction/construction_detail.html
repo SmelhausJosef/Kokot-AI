@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ construction.name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ construction.name }}</h1>
+  <p>{{ construction.location|default:"" }}</p>
+
+  <p>
+    <md-filled-button href="{% url 'construction:order-create' %}">Nová zakázka</md-filled-button>
+  </p>
+
+  <h2>Zakázky</h2>
+  <ul>
+    {% for order in construction.orders.all %}
+      <li>
+        <a href="{% url 'construction:order-detail' order.pk %}">{{ order.name }}</a>
+      </li>
+    {% empty %}
+      <li>Žádné zakázky.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

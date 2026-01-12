@@ -1,17 +1,29 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Stavby{% endblock %}
+{% block title %}{% trans "Stavby" %}{% endblock %}
 
 {% block content %}
-  <h1>Stavby</h1>
-  <p><md-filled-button href="{% url 'construction:construction-create' %}">Nová stavba</md-filled-button></p>
-  <ul>
-    {% for construction in constructions %}
-      <li>
-        <a href="{% url 'construction:construction-detail' construction.pk %}">{{ construction.name }}</a>
-      </li>
-    {% empty %}
-      <li>Žádné stavby.</li>
-    {% endfor %}
-  </ul>
+  <section class="page-header">
+    <div>
+      <h1>{% trans "Stavby" %}</h1>
+      <p>{% trans "Přehled staveb ve vaší organizaci." %}</p>
+    </div>
+    <md-filled-button href="{% url 'construction:construction-create' %}">{% trans "Nová stavba" %}</md-filled-button>
+  </section>
+
+  <div class="card">
+    <ul class="list">
+      {% for construction in constructions %}
+        <li>
+          <div>
+            <a href="{% url 'construction:construction-detail' construction.pk %}">{{ construction.name }}</a>
+            <div class="muted">{{ construction.location|default:"" }}</div>
+          </div>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "Žádné stavby." %}</li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

@@ -1,17 +1,29 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Zakázky{% endblock %}
+{% block title %}{% trans "Zakázky" %}{% endblock %}
 
 {% block content %}
-  <h1>Zakázky</h1>
-  <p><md-filled-button href="{% url 'construction:order-create' %}">Nová zakázka</md-filled-button></p>
-  <ul>
-    {% for order in orders %}
-      <li>
-        <a href="{% url 'construction:order-detail' order.pk %}">{{ order.name }}</a>
-      </li>
-    {% empty %}
-      <li>Žádné zakázky.</li>
-    {% endfor %}
-  </ul>
+  <section class="page-header">
+    <div>
+      <h1>{% trans "Zakázky" %}</h1>
+      <p>{% trans "Přehled zakázek napříč stavbami." %}</p>
+    </div>
+    <md-filled-button href="{% url 'construction:order-create' %}">{% trans "Nová zakázka" %}</md-filled-button>
+  </section>
+
+  <div class="card">
+    <ul class="list">
+      {% for order in orders %}
+        <li>
+          <div>
+            <a href="{% url 'construction:order-detail' order.pk %}">{{ order.name }}</a>
+            <div class="muted">{{ order.construction.name }}</div>
+          </div>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "Žádné zakázky." %}</li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

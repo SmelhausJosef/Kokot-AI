@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ budget.name }}{% endblock %}
+
+{% block content %}
+  <section class="page-header">
+    <div>
+      <h1>{{ budget.name }}</h1>
+      <p>{% trans "Zakázka" %}: {{ budget.order.name }} · {{ budget.order.construction.name }}</p>
+    </div>
+  </section>
+
+  <div class="card">
+    <h2>{% trans "Struktura rozpočtu" %}</h2>
+    <ul class="list">
+      {% for header in budget.headers.all %}
+        <li>{{ header.title }}</li>
+      {% empty %}
+        <li class="muted">{% trans "Zatím nejsou nahrané položky." %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

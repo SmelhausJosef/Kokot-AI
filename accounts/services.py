@@ -19,3 +19,15 @@ def get_construction_manager_queryset(organization):
         OrganizationRole.SUB_CONSTRUCTION_MANAGER,
     ]
     return User.objects.filter(memberships__organization=organization, memberships__role__in=roles).distinct()
+
+
+ROLE_NORMALIZATION = {
+    OrganizationRole.SUBCEO: OrganizationRole.CEO,
+    OrganizationRole.SUB_ACCOUNT_MANAGER: OrganizationRole.ACCOUNT_MANAGER,
+    OrganizationRole.SUB_BUDGET_MANAGER: OrganizationRole.BUDGET_MANAGER,
+    OrganizationRole.SUB_CONSTRUCTION_MANAGER: OrganizationRole.CONSTRUCTION_MANAGER,
+}
+
+
+def normalize_role(role: str) -> str:
+    return ROLE_NORMALIZATION.get(role, role)

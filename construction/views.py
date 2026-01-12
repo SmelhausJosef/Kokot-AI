@@ -35,7 +35,7 @@ class ConstructionDetailView(OrganizationScopedMixin, DetailView):
     template_name = "construction/construction_detail.html"
 
     def get_queryset(self):
-        return Construction.objects.filter(organization=self.organization)
+        return Construction.objects.filter(organization=self.organization).prefetch_related("orders")
 
 
 class ConstructionCreateView(OrganizationScopedMixin, CreateView):

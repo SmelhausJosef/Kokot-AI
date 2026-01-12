@@ -42,3 +42,4 @@ You are operating in the `kokot` project workspace.
 - Do not push directly to `main`; open a PR from a feature branch.
 - Implement features using TDD (write failing tests first, then implement).
 - Before opening a PR, run backend checks, frontend build, and tests.
+- Before opening a PR, merge the latest `main` into the current branch.

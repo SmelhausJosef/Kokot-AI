@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Nová zakázka{% endblock %}
+
+{% block content %}
+  <h1>Nová zakázka</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <md-filled-button type="submit">Uložit</md-filled-button>
+  </form>
+{% endblock %}

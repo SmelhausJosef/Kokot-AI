@@ -40,7 +40,7 @@ class OrganizationRole(models.TextChoices):
 
 
 class OrganizationMembership(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="memberships")
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="memberships")
     role = models.CharField(max_length=40, choices=OrganizationRole.choices)
     created_at = models.DateTimeField(auto_now_add=True)

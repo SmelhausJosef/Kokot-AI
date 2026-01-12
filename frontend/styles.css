@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap");
+
+:root {
+  --md-sys-color-primary: #1f5b98;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d3e3ff;
+  --md-sys-color-on-primary-container: #001c37;
+  --md-sys-color-secondary: #4c5f7a;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #dbe3f3;
+  --md-sys-color-on-secondary-container: #121c2b;
+  --md-sys-color-tertiary: #6b5778;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #f3daff;
+  --md-sys-color-on-tertiary-container: #261431;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-background: #f8f9fc;
+  --md-sys-color-on-background: #191c1f;
+  --md-sys-color-surface: #f8f9fc;
+  --md-sys-color-on-surface: #191c1f;
+  --md-sys-color-outline: #72777f;
+  --md-sys-color-outline-variant: #c1c7ce;
+
+  --md-sys-typescale-body-large-font-family: "Work Sans", "Segoe UI", sans-serif;
+  --md-sys-typescale-body-medium-font-family: "Work Sans", "Segoe UI", sans-serif;
+  --md-sys-typescale-title-large-font-family: "Work Sans", "Segoe UI", sans-serif;
+  --md-sys-typescale-title-medium-font-family: "Work Sans", "Segoe UI", sans-serif;
+  --md-sys-typescale-label-large-font-family: "Work Sans", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  background: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+}

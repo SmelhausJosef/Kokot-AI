@@ -6,6 +6,7 @@ This plan is phased to build the system safely from foundations to delivery. Eac
 - Initialize Django project structure and settings for Postgres.
 - Set up Vite asset pipeline for Material Web (M3) components and static builds.
 - Add environment configuration, secrets handling, and local run scripts.
+- Select the test framework (pytest-django vs Django test runner) and wire it up.
 - Define basic CI checks (lint, test placeholders).
 
 ## Phase 1 - Authentication and Organization Core

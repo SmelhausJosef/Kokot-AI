@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Nový kontrakt" %}{% endblock %}
+{% block title %}{% trans "Nový rozpočet" %}{% endblock %}
 
 {% block content %}
   <section class="page-header">
     <div>
-      <h1>{% trans "Nový kontrakt" %}</h1>
-      <p>{% trans "Založení kontraktu ke zakázce." %}</p>
+      <h1>{% trans "Nový rozpočet" %}</h1>
+      <p>{% trans "Založení rozpočtu pro zakázku." %}</p>
     </div>
   </section>
-  <form method="post" class="form">
+
+  <form method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
     {{ form.as_p }}
     <md-filled-button type="submit">{% trans "Uložit" %}</md-filled-button>

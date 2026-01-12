@@ -1,23 +1,29 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}{{ construction.name }}{% endblock %}
 
 {% block content %}
-  <h1>{{ construction.name }}</h1>
-  <p>{{ construction.location|default:"" }}</p>
+  <section class="page-header">
+    <div>
+      <h1>{{ construction.name }}</h1>
+      <p class="muted">{{ construction.location|default:"" }}</p>
+    </div>
+    <md-filled-button href="{% url 'construction:order-create' %}">{% trans "Nová zakázka" %}</md-filled-button>
+  </section>
 
-  <p>
-    <md-filled-button href="{% url 'construction:order-create' %}">Nová zakázka</md-filled-button>
-  </p>
-
-  <h2>Zakázky</h2>
-  <ul>
-    {% for order in construction.orders.all %}
-      <li>
-        <a href="{% url 'construction:order-detail' order.pk %}">{{ order.name }}</a>
-      </li>
-    {% empty %}
-      <li>Žádné zakázky.</li>
-    {% endfor %}
-  </ul>
+  <div class="card">
+    <h2>{% trans "Zakázky" %}</h2>
+    <ul class="list">
+      {% for order in construction.orders.all %}
+        <li>
+          <div>
+            <a href="{% url 'construction:order-detail' order.pk %}">{{ order.name }}</a>
+          </div>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "Žádné zakázky." %}</li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

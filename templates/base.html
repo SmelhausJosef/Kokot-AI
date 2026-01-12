@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!doctype html>
 <html lang="cs">
   <head>
@@ -8,7 +8,43 @@
     <link rel="stylesheet" href="{% static 'dist/assets/main.css' %}" />
   </head>
   <body>
-    {% block content %}{% endblock %}
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="brand">
+          <span class="brand-mark">K</span>
+          <div>
+            <div class="brand-title">Kokot</div>
+            <div class="brand-subtitle">{% trans "Správa stavebních kontraktů" %}</div>
+          </div>
+        </div>
+
+        <nav class="nav">
+          {% if user.is_authenticated %}
+            <a href="{% url 'construction:construction-list' %}">{% trans "Stavby" %}</a>
+            <a href="{% url 'construction:order-list' %}">{% trans "Zakázky" %}</a>
+            {% if active_role == "CEO" or active_role == "BUDGET_MANAGER" or active_role == "ACCOUNT_MANAGER" %}
+              <a href="{% url 'budgets:budget-list' %}">{% trans "Rozpočty" %}</a>
+            {% endif %}
+          {% endif %}
+        </nav>
+
+        <div class="auth">
+          {% if user.is_authenticated %}
+            <div class="user-chip">
+              <div>{{ user.get_full_name|default:user.username }}</div>
+              {% if active_organization %}<span>{{ active_organization.name }}</span>{% endif %}
+            </div>
+            <md-outlined-button href="{% url 'logout' %}">{% trans "Odhlásit" %}</md-outlined-button>
+          {% else %}
+            <md-filled-button href="{% url 'login' %}">{% trans "Přihlásit" %}</md-filled-button>
+          {% endif %}
+        </div>
+      </header>
+
+      <main class="content">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
     <script type="module" src="{% static 'dist/assets/main.js' %}"></script>
   </body>
 </html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Rozpočty" %}{% endblock %}
+
+{% block content %}
+  <section class="page-header">
+    <div>
+      <h1>{% trans "Rozpočty" %}</h1>
+      <p>{% trans "Správa rozpočtů a období pro zakázky." %}</p>
+    </div>
+    <md-filled-button href="{% url 'budgets:budget-create' %}">{% trans "Nový rozpočet" %}</md-filled-button>
+  </section>
+
+  <div class="card">
+    <ul class="list">
+      {% for budget in budgets %}
+        <li>
+          <div>
+            <a href="{% url 'budgets:budget-detail' budget.pk %}">{{ budget.name }}</a>
+            <div class="muted">{{ budget.order.name }} · {{ budget.order.construction.name }}</div>
+          </div>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "Zatím žádné rozpočty." %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

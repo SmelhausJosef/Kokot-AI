@@ -1,12 +1,18 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Přihlášení{% endblock %}
+{% block title %}{% trans "Přihlášení" %}{% endblock %}
 
 {% block content %}
-  <h1>Přihlášení</h1>
-  <form method="post">
+  <section class="page-header">
+    <div>
+      <h1>{% trans "Přihlášení" %}</h1>
+      <p>{% trans "Přístup do správy organizace." %}</p>
+    </div>
+  </section>
+  <form method="post" class="form">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Přihlásit se</button>
+    <md-filled-button type="submit">{% trans "Přihlásit se" %}</md-filled-button>
   </form>
 {% endblock %}

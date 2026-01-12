@@ -4,20 +4,10 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
-from accounts.services import get_active_membership
+from accounts.mixins import OrganizationScopedMixin
 
 from .forms import ConstructionForm, ContractForWorkForm, OrderForm
 from .models import Construction, ContractForWork, Order
-
-
-class OrganizationScopedMixin(LoginRequiredMixin):
-    membership = None
-    organization = None
-
-    def dispatch(self, request, *args, **kwargs):
-        self.membership = get_active_membership(request.user)
-        self.organization = self.membership.organization
-        return super().dispatch(request, *args, **kwargs)
 
 
 class ConstructionListView(OrganizationScopedMixin, ListView):

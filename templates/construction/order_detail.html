@@ -1,15 +1,25 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}{{ order.name }}{% endblock %}
 
 {% block content %}
-  <h1>{{ order.name }}</h1>
-  <p>Stavba: {{ order.construction.name }}</p>
+  <section class="page-header">
+    <div>
+      <h1>{{ order.name }}</h1>
+      <p>{% trans "Stavba" %}: {{ order.construction.name }}</p>
+    </div>
+    {% if not order.contract %}
+      <md-filled-button href="{% url 'construction:contract-create' order.pk %}">{% trans "Nový kontrakt" %}</md-filled-button>
+    {% endif %}
+  </section>
 
-  <h2>Contract For Work</h2>
-  {% if order.contract %}
-    <p>{{ order.contract.contract_number }}</p>
-  {% else %}
-    <md-filled-button href="{% url 'construction:contract-create' order.pk %}">Nový kontrakt</md-filled-button>
-  {% endif %}
+  <div class="card">
+    <h2>{% trans "Kontrakt" %}</h2>
+    {% if order.contract %}
+      <div class="muted">{% trans "Číslo kontraktu" %}: {{ order.contract.contract_number }}</div>
+    {% else %}
+      <p class="muted">{% trans "Kontrakt zatím není založen." %}</p>
+    {% endif %}
+  </div>
 {% endblock %}

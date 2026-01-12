@@ -13,7 +13,7 @@ This file tracks delivered functionality in the repository.
 - Phase 7: Docker build, Kubernetes manifests, WhiteNoise static serving, and OpenTelemetry configuration.
 
 ## In progress (current branch)
-- Phase 8: Hardening, performance, and additional tests.
+- Phase 8: Hardening tests for budget scoping and import sheet validation; deployment env fix (DJANGO_SETTINGS_MODULE).
 
 ## Pending
 - None.

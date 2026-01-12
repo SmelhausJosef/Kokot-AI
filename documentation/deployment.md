@@ -47,6 +47,7 @@ kubectl apply -f k8s/ingress.yaml
 
 Required:
 - `DJANGO_SECRET_KEY`
+- `DJANGO_SETTINGS_MODULE`
 - `POSTGRES_DB`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
@@ -57,6 +58,9 @@ Production settings:
 - `DJANGO_DEBUG=0`
 - `ALLOWED_HOSTS`
 - `CSRF_TRUSTED_ORIGINS`
+
+Local Kubernetes note:
+- Health probes call the pod IP directly; set `ALLOWED_HOSTS="*"` or include the pod subnet to avoid 400 responses during readiness/liveness checks.
 
 OpenTelemetry (optional but recommended):
 - `OTEL_SERVICE_NAME`

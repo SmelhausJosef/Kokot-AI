@@ -4,6 +4,7 @@ metadata:
   name: kokot-config
 data:
   DJANGO_DEBUG: "0"
+  DJANGO_SETTINGS_MODULE: "config.settings"
   ALLOWED_HOSTS: "kokot.example.com"
   CSRF_TRUSTED_ORIGINS: "https://kokot.example.com"
   POSTGRES_DB: "kokot"

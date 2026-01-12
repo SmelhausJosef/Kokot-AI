@@ -38,6 +38,7 @@ You are operating in the `kokot` project workspace.
 - Use Decimal for money and quantities; avoid float for persisted values.
 - Keep frontend styling aligned with Material Web (M3) theme tokens.
 - Keep documentation in `documentation/` updated when workflows or data assumptions change.
+- Continuously update `documentation/` with live implementation status; record changes in `documentation/implementation-status.md`.
 - Avoid adding extra infrastructure components unless requested.
 - Do not push directly to `main`; open a PR from a feature branch.
 - Implement features using TDD (write failing tests first, then implement).

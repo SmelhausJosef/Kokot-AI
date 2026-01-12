@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kokot-config
+data:
+  DJANGO_DEBUG: "0"
+  ALLOWED_HOSTS: "kokot.example.com"
+  CSRF_TRUSTED_ORIGINS: "https://kokot.example.com"
+  POSTGRES_DB: "kokot"
+  POSTGRES_USER: "kokot"
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+  OTEL_SERVICE_NAME: "kokot-web"
+  OTEL_TRACES_EXPORTER: "otlp"
+  OTEL_LOGS_EXPORTER: "otlp"
+  OTEL_METRICS_EXPORTER: "otlp"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318"
+  OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: "true"
+  OTEL_PYTHON_LOG_CORRELATION: "true"
+  OTEL_PYTHON_LOG_LEVEL: "info"
+  OTEL_PYTHON_EXCLUDED_URLS: "healthz"

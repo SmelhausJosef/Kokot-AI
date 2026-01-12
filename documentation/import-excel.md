@@ -2,6 +2,12 @@
 
 This document summarizes findings from the sample file in `ImportExcel/APT Kvilda - Rozpočet s VV.xlsx` and suggests an algorithm for extracting BudgetHeaders and BudgetItems.
 
+## Implementation Status
+- Implemented in `budgets/importers.py` using `openpyxl`.
+- Budget creation triggers the import when an Excel file is provided.
+- Measurement lines (`Výkaz výměr:`, `Ztratné:`) are skipped for now.
+- Import errors surface on the budget form and the uploaded file is removed.
+
 ## Source File
 - Sample workbook: `ImportExcel/APT Kvilda - Rozpočet s VV.xlsx`
 - Relevant sheet: `Zakázka`

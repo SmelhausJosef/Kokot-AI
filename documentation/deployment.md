@@ -20,7 +20,7 @@ docker run --rm -p 8000:8000 \
   kokot-web:latest
 ```
 
-Static files are bundled with Vite and collected during the image build. The runtime uses WhiteNoise to serve `/static/` assets.
+Static files are bundled with Vite and collected during the image build. The runtime uses WhiteNoise to serve `/static/` assets. The collect step does not require database access unless app imports touch the DB at startup.
 
 ## Kubernetes Manifests
 

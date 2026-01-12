@@ -20,6 +20,9 @@ class OrganizationScopedMixin(AccessMixin):
             response = self.setup_membership(request)
             if response is not None:
                 return response
+        return self.dispatch_with_membership(request, *args, **kwargs)
+
+    def dispatch_with_membership(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -34,4 +37,4 @@ class RoleRequiredMixin(OrganizationScopedMixin):
             role = normalize_role(self.membership.role)
             if role not in self.required_roles:
                 raise PermissionDenied("User role is not allowed for this action.")
-        return super().dispatch(request, *args, **kwargs)
+        return self.dispatch_with_membership(request, *args, **kwargs)

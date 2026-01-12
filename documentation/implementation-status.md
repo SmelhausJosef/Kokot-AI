@@ -15,6 +15,7 @@ This file tracks delivered functionality in the repository.
 ## In progress (current branch)
 - Phase 8: Hardening, performance, and additional tests.
 - Home page now redirects to the construction list at `/constructions/`.
+- Admin: Organization, membership, and invitation management in Django admin.
 
 ## Pending
-- None.
+- Phase 8: Hardening, performance, and additional tests.

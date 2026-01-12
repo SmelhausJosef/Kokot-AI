@@ -39,3 +39,5 @@ You are operating in the `kokot` project workspace.
 - Keep frontend styling aligned with Material Web (M3) theme tokens.
 - Keep documentation in `documentation/` updated when workflows or data assumptions change.
 - Avoid adding extra infrastructure components unless requested.
+- Do not push directly to `main`; open a PR from a feature branch.
+- Implement features using TDD (write failing tests first, then implement).

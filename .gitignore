@@ -1,2 +1,14 @@
 .DS_Store
 ~$*.xlsx
+
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.venv/
+venv/
+ENV/
+env/
+
+node_modules/
+static/dist/

@@ -85,3 +85,44 @@ def test_budget_create_rolls_back_on_import_error(settings, tmp_path, client):
     assert "excel_file" in response.context["form"].errors
     assert not Budget.objects.filter(order=order).exists()
     assert not list(tmp_path.rglob("*.xlsx"))
+
+
+@pytest.mark.django_db
+def test_budget_list_scoped_to_organization(client):
+    organization_a = Organization.objects.create(name="Alpha Build")
+    organization_b = Organization.objects.create(name="Beta Build")
+    user = User.objects.create_user(username="bm@example.com", password="StrongPass123!")
+    OrganizationMembership.objects.create(
+        user=user,
+        organization=organization_a,
+        role=OrganizationRole.BUDGET_MANAGER,
+    )
+    order_a = build_order(organization_a)
+    order_b = build_order(organization_b)
+    budget_a = Budget.objects.create(order=order_a, name="Budget A")
+    Budget.objects.create(order=order_b, name="Budget B")
+
+    client.login(username="bm@example.com", password="StrongPass123!")
+    response = client.get(reverse("budgets:budget-list"))
+    assert response.status_code == 200
+    budgets = list(response.context["budgets"])
+    assert budget_a in budgets
+    assert all(budget.order.construction.organization_id == organization_a.id for budget in budgets)
+
+
+@pytest.mark.django_db
+def test_budget_detail_scoped_to_organization(client):
+    organization_a = Organization.objects.create(name="Alpha Build")
+    organization_b = Organization.objects.create(name="Beta Build")
+    user = User.objects.create_user(username="bm@example.com", password="StrongPass123!")
+    OrganizationMembership.objects.create(
+        user=user,
+        organization=organization_a,
+        role=OrganizationRole.BUDGET_MANAGER,
+    )
+    order_b = build_order(organization_b)
+    budget_b = Budget.objects.create(order=order_b, name="Budget B")
+
+    client.login(username="bm@example.com", password="StrongPass123!")
+    response = client.get(reverse("budgets:budget-detail", args=[budget_b.pk]))
+    assert response.status_code == 404

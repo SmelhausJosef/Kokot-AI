@@ -13,7 +13,7 @@ This file tracks delivered functionality in the repository.
 - Phase 7: Docker build, Kubernetes manifests, WhiteNoise static serving, and OpenTelemetry configuration.
 
 ## In progress (current branch)
-- None.
+- Phase 8: Hardening, performance, and additional tests.
 
 ## Pending
-- Phase 8: Hardening, performance, and additional tests.
+- None.

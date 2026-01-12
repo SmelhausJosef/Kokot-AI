@@ -33,6 +33,16 @@ def build_workbook_bytes(include_headers=True, include_header_rows=True):
     return buffer.getvalue()
 
 
+def build_workbook_without_zakazka():
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Other"
+    sheet.append(["Typ", "Popis"])
+    buffer = BytesIO()
+    workbook.save(buffer)
+    return buffer.getvalue()
+
+
 @pytest.mark.django_db
 def test_import_budget_creates_headers_and_items(settings, tmp_path):
     settings.MEDIA_ROOT = tmp_path
@@ -64,6 +74,21 @@ def test_import_requires_header_row(settings, tmp_path):
     budget = Budget.objects.create(
         order=order,
         name="Budget B",
+        excel_file=SimpleUploadedFile("budget.xlsx", payload),
+    )
+
+    with pytest.raises(ExcelImportError):
+        import_budget_from_excel(budget)
+
+
+@pytest.mark.django_db
+def test_import_requires_zakazka_sheet(settings, tmp_path):
+    settings.MEDIA_ROOT = tmp_path
+    order = build_order()
+    payload = build_workbook_without_zakazka()
+    budget = Budget.objects.create(
+        order=order,
+        name="Budget C",
         excel_file=SimpleUploadedFile("budget.xlsx", payload),
     )
 

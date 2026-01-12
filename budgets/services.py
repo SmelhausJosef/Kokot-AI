@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.utils import timezone
 
 from .models import BudgetItem, BudgetItemAmount, BudgetPeriod
@@ -55,13 +56,29 @@ def decline_period(
 ) -> BudgetPeriod:
     if period.status != BudgetPeriod.Status.SUBMITTED:
         raise ValidationError("Only submitted periods can be declined.")
-    period.status = BudgetPeriod.Status.OPEN
-    period.reviewed_at = timezone.now()
-    period.decline_payment = payment
-    period.decline_penalty = penalty
-    period.decline_fee = fee
-    period.save(update_fields=["status", "reviewed_at", "decline_payment", "decline_penalty", "decline_fee"])
-    return period
+    with transaction.atomic():
+        period = BudgetPeriod.objects.select_for_update().get(pk=period.pk)
+        if (
+            BudgetPeriod.objects.filter(budget=period.budget, status=BudgetPeriod.Status.OPEN)
+            .exclude(pk=period.pk)
+            .exists()
+        ):
+            raise ValidationError("Cannot reopen period while another period is open.")
+        period.status = BudgetPeriod.Status.OPEN
+        period.reviewed_at = timezone.now()
+        period.decline_payment = payment
+        period.decline_penalty = penalty
+        period.decline_fee = fee
+        period.save(
+            update_fields=[
+                "status",
+                "reviewed_at",
+                "decline_payment",
+                "decline_penalty",
+                "decline_fee",
+            ]
+        )
+        return period
 
 
 def close_period(period: BudgetPeriod) -> BudgetPeriod:

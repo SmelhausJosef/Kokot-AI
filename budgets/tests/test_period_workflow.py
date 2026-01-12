@@ -56,7 +56,7 @@ def test_decline_returns_to_open_with_fees():
     period = create_period(budget)
 
     submit_period(period)
-    decline_period(period, payment="100.00", penalty="10.00", fee="5.00")
+    period = decline_period(period, payment="100.00", penalty="10.00", fee="5.00")
 
     assert period.status == period.Status.OPEN
     assert period.reviewed_at is not None
@@ -104,3 +104,17 @@ def test_set_item_amount_validates_previous_period():
 
     amount = set_item_amount(period_two, item, "150.00")
     assert str(amount.amount) == "150.00"
+
+
+@pytest.mark.django_db
+def test_decline_fails_if_another_open_period_exists():
+    budget = build_budget()
+    period_one = create_period(budget)
+    submit_period(period_one)
+
+    period_two = create_period(budget)
+
+    with pytest.raises(ValidationError):
+        decline_period(period_one)
+
+    assert period_two.status == period_two.Status.OPEN

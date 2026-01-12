@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 
@@ -102,3 +103,24 @@ class BudgetItemAmount(models.Model):
 
     def __str__(self) -> str:
         return f"{self.budget_item} ({self.amount})"
+
+    def clean(self):
+        if self.amount is not None and self.amount < 0:
+            raise ValidationError("Amount must be non-negative.")
+        if self.period_id and self.budget_item_id:
+            if self.period.budget_id != self.budget_item.header.budget_id:
+                raise ValidationError("Budget item does not belong to the same budget as period.")
+
+            if self.period.created_at:
+                previous_amount = (
+                    BudgetItemAmount.objects.filter(
+                        budget_item=self.budget_item,
+                        period__budget=self.period.budget,
+                        period__created_at__lt=self.period.created_at,
+                    )
+                    .order_by("-period__created_at")
+                    .values_list("amount", flat=True)
+                    .first()
+                )
+                if previous_amount is not None and self.amount < previous_amount:
+                    raise ValidationError("Amount cannot be lower than previous period.")

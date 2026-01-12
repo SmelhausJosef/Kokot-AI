@@ -56,7 +56,8 @@ Each Order has a ContractForWork with the following fields:
 - Orders contain Budgets.
 - Budget can include an Appendix (to be added later).
 - ExcelFile must be stored with the Budget.
-- Excel import is deferred and will be handled later.
+- Excel import runs when an Excel file is uploaded on Budget creation, following `documentation/import-excel.md`.
+- Measurement detail lines are currently ignored during import.
 
 ### Budget Approval Workflow
 - BudgetManager creates a Budget.
@@ -69,6 +70,8 @@ Each Order has a ContractForWork with the following fields:
 - If Declined, the Period returns to unsubmitted status.
 - When Declining, ConstructionManager adds a payment, penalty, or fee.
 - If Accepted, SubContractor can close the Period.
+- Period statuses: open, submitted, accepted, declined, closed.
+- Only one open Period is allowed per Budget.
 
 ### Budget Structure
 - Budget has BudgetHeaders.
@@ -77,6 +80,6 @@ Each Order has a ContractForWork with the following fields:
 
 ### BudgetItem
 - Code (string)
-- Describe (string)
+- Description (string)
 - MeasureUnit (string)
 - PriceForUnit (float/double)
